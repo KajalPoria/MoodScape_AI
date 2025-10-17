@@ -145,13 +145,13 @@ const Dashboard = () => {
       </motion.header>
 
       {/* Main Grid */}
-      <div className="grid lg:grid-cols-[300px_1fr_300px] gap-6 p-6 h-[calc(100vh-80px)]">
+      <div className="grid lg:grid-cols-[300px_1fr_300px] gap-6 p-6 h-[calc(100vh-80px)] overflow-hidden">
         {/* Left Panel - Mood Visualization */}
         <motion.div
           initial={{ x: -100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="glass-panel rounded-3xl p-6 flex flex-col gap-6"
+          className="glass-panel rounded-3xl p-6 flex flex-col gap-6 overflow-y-auto"
         >
           <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Your Mood
@@ -192,7 +192,7 @@ const Dashboard = () => {
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="glass-panel rounded-3xl p-6"
+          className="glass-panel rounded-3xl p-6 overflow-y-auto"
         >
           <MicroActionPanel 
             emotion={moodState.emotion} 

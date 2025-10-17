@@ -6,6 +6,7 @@ import type { Emotion } from "@/pages/Dashboard";
 import BreathingExercise from "./BreathingExercise";
 import MusicPlayer from "./MusicPlayer";
 import JournalPrompt from "./JournalPrompt";
+import ActionGuidance from "./ActionGuidance";
 
 interface MicroActionPanelProps {
   emotion: Emotion;
@@ -17,8 +18,23 @@ const MicroActionPanel = ({ emotion, microAction, musicAction }: MicroActionPane
   const [breathingPattern, setBreathingPattern] = useState<string | null>(null);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [journalPrompt, setJournalPrompt] = useState<string | null>(null);
+  const [actionGuidance, setActionGuidance] = useState<{ type: string; label: string } | null>(null);
   const { toast } = useToast();
   
+  const getActionType = (label: string): string => {
+    if (label.includes("Breathing") || label.includes("Breath")) return "breathing";
+    if (label.includes("Meditation") || label.includes("Body Scan")) return "meditation";
+    if (label.includes("Gratitude")) return "gratitude";
+    if (label.includes("Stretch") || label.includes("Physical")) return "bodywork";
+    if (label.includes("Ground")) return "grounding";
+    if (label.includes("Self-Care") || label.includes("Self-Compassion")) return "selfcare";
+    if (label.includes("Dance") || label.includes("Move") || label.includes("workout") || label.includes("Energy")) return "movement";
+    if (label.includes("Check In")) return "checkin";
+    if (label.includes("Create") || label.includes("Journal") && !label.includes("Mini")) return "creativity";
+    if (label.includes("Explore")) return "exploration";
+    return "checkin";
+  };
+
   const handleAction = (label: string, desc: string) => {
     if (label.includes("Breathing") || label.includes("Breath")) {
       const pattern = desc.includes("4-7-8") ? "4-7-8" : desc.includes("Slow") ? "slow" : "4-4-4-4";
@@ -29,16 +45,12 @@ const MicroActionPanel = ({ emotion, microAction, musicAction }: MicroActionPane
         title: "🎵 Music Started",
         description: "Let the rhythm move you!",
       });
-    } else if (label.includes("Journal")) {
+    } else if (label.includes("Mini Journal")) {
       setJournalPrompt(microAction || "What's on your mind right now?");
-    } else if (label.includes("Gratitude")) {
-      setJournalPrompt("List 3 things you're grateful for today");
     } else {
-      toast({
-        title: `✨ ${label}`,
-        description: desc,
-        duration: 5000,
-      });
+      // Show AI-powered guidance for all other actions
+      const actionType = getActionType(label);
+      setActionGuidance({ type: actionType, label });
     }
   };
 
@@ -169,7 +181,7 @@ const MicroActionPanel = ({ emotion, microAction, musicAction }: MicroActionPane
         </div>
       </motion.div>
 
-      {/* Breathing Exercise Modal */}
+      {/* Modals */}
       <AnimatePresence>
         {breathingPattern && (
           <BreathingExercise
@@ -181,6 +193,14 @@ const MicroActionPanel = ({ emotion, microAction, musicAction }: MicroActionPane
           <JournalPrompt
             prompt={journalPrompt}
             onClose={() => setJournalPrompt(null)}
+          />
+        )}
+        {actionGuidance && (
+          <ActionGuidance
+            actionType={actionGuidance.type}
+            actionLabel={actionGuidance.label}
+            emotion={emotion}
+            onClose={() => setActionGuidance(null)}
           />
         )}
       </AnimatePresence>

@@ -19,37 +19,43 @@ interface Song {
   emotion: Emotion;
 }
 
-// Curated songs for each emotion (using royalty-free music URLs)
+// Curated songs for each emotion (English and Hindi songs with uplifting themes)
 const emotionSongs: Record<Emotion, Song[]> = {
   calm: [
-    { title: "Peaceful Waters", artist: "Ambient Dreams", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", emotion: "calm" },
-    { title: "Meditation Flow", artist: "Zen Masters", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", emotion: "calm" },
-    { title: "Serene Dawn", artist: "Nature Sounds", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", emotion: "calm" },
+    { title: "Weightless", artist: "Marconi Union", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", emotion: "calm" },
+    { title: "Tum Hi Ho (Instrumental)", artist: "Arijit Singh", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", emotion: "calm" },
+    { title: "River Flows in You", artist: "Yiruma", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", emotion: "calm" },
+    { title: "Kun Faya Kun", artist: "A.R. Rahman", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3", emotion: "calm" },
   ],
   happy: [
-    { title: "Sunny Day", artist: "Happy Vibes", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", emotion: "happy" },
-    { title: "Joy Rhythm", artist: "Upbeat Collective", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3", emotion: "happy" },
-    { title: "Celebration", artist: "Feel Good Band", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", emotion: "happy" },
+    { title: "Happy", artist: "Pharrell Williams", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", emotion: "happy" },
+    { title: "Badtameez Dil", artist: "Benny Dayal", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3", emotion: "happy" },
+    { title: "Don't Stop Me Now", artist: "Queen", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", emotion: "happy" },
+    { title: "Gallan Goodiyaan", artist: "Yashita Sharma", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3", emotion: "happy" },
   ],
   anxious: [
-    { title: "Gentle Reassurance", artist: "Calm Therapy", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3", emotion: "anxious" },
-    { title: "Breathing Space", artist: "Anxiety Relief", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3", emotion: "anxious" },
-    { title: "Safe Harbor", artist: "Grounding Sounds", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3", emotion: "anxious" },
+    { title: "Breathe Me", artist: "Sia", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3", emotion: "anxious" },
+    { title: "Kabira", artist: "Tochi Raina", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3", emotion: "anxious" },
+    { title: "Fix You", artist: "Coldplay", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3", emotion: "anxious" },
+    { title: "Hasi (Female)", artist: "Shreya Ghoshal", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3", emotion: "anxious" },
   ],
   sad: [
-    { title: "Healing Rain", artist: "Comfort Melody", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3", emotion: "sad" },
-    { title: "Gentle Embrace", artist: "Solace", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3", emotion: "sad" },
-    { title: "Hope Rising", artist: "Emotional Journey", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3", emotion: "sad" },
+    { title: "Someone Like You", artist: "Adele", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3", emotion: "sad" },
+    { title: "Phir Le Aya Dil", artist: "Arijit Singh", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3", emotion: "sad" },
+    { title: "The Scientist", artist: "Coldplay", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3", emotion: "sad" },
+    { title: "Channa Mereya", artist: "Arijit Singh", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3", emotion: "sad" },
   ],
   excited: [
-    { title: "Energy Boost", artist: "Power Band", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3", emotion: "excited" },
-    { title: "Adrenaline Rush", artist: "High Energy", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3", emotion: "excited" },
-    { title: "Electric Dreams", artist: "Dynamic Force", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3", emotion: "excited" },
+    { title: "Can't Stop", artist: "Red Hot Chili Peppers", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3", emotion: "excited" },
+    { title: "Zinda", artist: "Siddharth Mahadevan", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3", emotion: "excited" },
+    { title: "Eye of the Tiger", artist: "Survivor", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3", emotion: "excited" },
+    { title: "Apna Time Aayega", artist: "Ranveer Singh", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", emotion: "excited" },
   ],
   neutral: [
-    { title: "Balanced Mind", artist: "Equilibrium", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3", emotion: "neutral" },
-    { title: "Steady Flow", artist: "Center Point", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", emotion: "neutral" },
-    { title: "Exploration", artist: "Open Mind", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", emotion: "neutral" },
+    { title: "Somewhere Only We Know", artist: "Keane", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3", emotion: "neutral" },
+    { title: "Ilahi", artist: "Arijit Singh", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", emotion: "neutral" },
+    { title: "Viva La Vida", artist: "Coldplay", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", emotion: "neutral" },
+    { title: "Nadaan Parindey", artist: "A.R. Rahman", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", emotion: "neutral" },
   ],
 };
 
