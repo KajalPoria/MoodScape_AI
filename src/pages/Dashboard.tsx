@@ -8,7 +8,7 @@ import AdaptiveEnvironment from "@/components/AdaptiveEnvironment";
 import ChatInput from "@/components/ChatInput";
 import MicroActionPanel from "@/components/MicroActionPanel";
 import MoodHistory from "@/components/MoodHistory";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export type Emotion = "calm" | "happy" | "anxious" | "sad" | "excited" | "neutral";
@@ -119,6 +119,15 @@ const Dashboard = () => {
         className="glass-panel border-b border-border/50 px-6 py-4 flex justify-between items-center"
       >
         <div className="flex items-center gap-3">
+          <Button
+            onClick={() => navigate("/")}
+            variant="ghost"
+            size="sm"
+            className="hover:bg-primary/20 transition-smooth"
+          >
+            <Home className="w-4 h-4 mr-2" />
+            Home
+          </Button>
           <User className="w-6 h-6 text-accent" />
           <span className="text-sm text-muted-foreground">
             {user?.email}
