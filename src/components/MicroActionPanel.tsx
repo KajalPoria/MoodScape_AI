@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { Emotion } from "@/pages/Dashboard";
 import BreathingExercise from "./BreathingExercise";
 import MusicPlayer from "./MusicPlayer";
+import JournalPrompt from "./JournalPrompt";
 
 interface MicroActionPanelProps {
   emotion: Emotion;
@@ -15,21 +16,28 @@ interface MicroActionPanelProps {
 const MicroActionPanel = ({ emotion, microAction, musicAction }: MicroActionPanelProps) => {
   const [breathingPattern, setBreathingPattern] = useState<string | null>(null);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [journalPrompt, setJournalPrompt] = useState<string | null>(null);
   const { toast } = useToast();
+  
   const handleAction = (label: string, desc: string) => {
     if (label.includes("Breathing") || label.includes("Breath")) {
       const pattern = desc.includes("4-7-8") ? "4-7-8" : desc.includes("Slow") ? "slow" : "4-4-4-4";
       setBreathingPattern(pattern);
-    } else if (label.includes("Music") || label.includes("Dance")) {
+    } else if (label.includes("Music") || label.includes("Dance") || label.includes("Move")) {
       setIsMusicPlaying(true);
       toast({
         title: "🎵 Music Started",
         description: "Let the rhythm move you!",
       });
+    } else if (label.includes("Journal")) {
+      setJournalPrompt(microAction || "What's on your mind right now?");
+    } else if (label.includes("Gratitude")) {
+      setJournalPrompt("List 3 things you're grateful for today");
     } else {
       toast({
         title: `✨ ${label}`,
         description: desc,
+        duration: 5000,
       });
     }
   };
@@ -167,6 +175,12 @@ const MicroActionPanel = ({ emotion, microAction, musicAction }: MicroActionPane
           <BreathingExercise
             pattern={breathingPattern}
             onClose={() => setBreathingPattern(null)}
+          />
+        )}
+        {journalPrompt && (
+          <JournalPrompt
+            prompt={journalPrompt}
+            onClose={() => setJournalPrompt(null)}
           />
         )}
       </AnimatePresence>

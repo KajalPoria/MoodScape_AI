@@ -7,6 +7,7 @@ import MoodVisualization from "@/components/MoodVisualization";
 import AdaptiveEnvironment from "@/components/AdaptiveEnvironment";
 import ChatInput from "@/components/ChatInput";
 import MicroActionPanel from "@/components/MicroActionPanel";
+import MoodHistory from "@/components/MoodHistory";
 import { LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -64,20 +65,36 @@ const Dashboard = () => {
     navigate("/auth");
   };
 
-  const handleMoodUpdate = (newMood: MoodState) => {
+  const handleMoodUpdate = async (newMood: MoodState) => {
     setMoodState(newMood);
     
     // Save to database
     if (user) {
-      supabase.from("mood_sessions").insert({
-        user_id: user.id,
-        emotion: newMood.emotion,
-        intensity: newMood.intensity,
-        input_text: newMood.message,
-        music_action: newMood.musicAction,
-        visual_action: newMood.visualAction,
-        micro_action: newMood.microAction,
-      });
+      try {
+        const sessionData: any = {
+          user_id: user.id,
+          emotion: newMood.emotion,
+          intensity: newMood.intensity,
+          input_text: newMood.message,
+          music_action: newMood.musicAction,
+          visual_action: newMood.visualAction,
+          micro_action: newMood.microAction,
+        };
+
+        // @ts-ignore - mood_sessions table exists but types not yet regenerated
+        const { error } = await supabase.from("mood_sessions").insert(sessionData);
+
+        if (error) {
+          console.error("Error saving mood session:", error);
+          toast({
+            title: "Error",
+            description: "Failed to save mood session",
+            variant: "destructive",
+          });
+        }
+      } catch (e) {
+        console.error("Exception saving mood:", e);
+      }
     }
   };
 
@@ -132,11 +149,15 @@ const Dashboard = () => {
           </h2>
           <MoodVisualization emotion={moodState.emotion} intensity={moodState.intensity} />
           
-          <div className="mt-auto space-y-2">
-            <p className="text-sm text-muted-foreground">Current State</p>
-            <div className="p-4 bg-card/50 rounded-xl">
-              <p className="text-sm leading-relaxed">{moodState.message}</p>
+          <div className="mt-auto space-y-4">
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">Current State</p>
+              <div className="p-4 bg-card/50 rounded-xl">
+                <p className="text-sm leading-relaxed">{moodState.message}</p>
+              </div>
             </div>
+            
+            <MoodHistory userId={user?.id} />
           </div>
         </motion.div>
 

@@ -4,6 +4,7 @@ import { Send, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import type { Emotion } from "@/pages/Dashboard";
 
 interface ChatInputProps {
@@ -15,78 +16,6 @@ const ChatInput = ({ onMoodUpdate }: ChatInputProps) => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  const detectEmotion = (text: string): { emotion: Emotion; intensity: number } => {
-    const lowerText = text.toLowerCase();
-    
-    // Simple keyword-based emotion detection
-    const emotionKeywords = {
-      happy: ["happy", "joy", "great", "wonderful", "excited", "amazing", "love", "good"],
-      sad: ["sad", "down", "depressed", "unhappy", "terrible", "awful", "bad"],
-      anxious: ["anxious", "worried", "stress", "nervous", "panic", "overwhelmed"],
-      calm: ["calm", "peaceful", "relaxed", "tranquil", "serene", "zen"],
-      excited: ["excited", "energetic", "pumped", "hyped", "thrilled"],
-    };
-
-    let detectedEmotion: Emotion = "neutral";
-    let maxMatches = 0;
-
-    Object.entries(emotionKeywords).forEach(([emotion, keywords]) => {
-      const matches = keywords.filter(keyword => lowerText.includes(keyword)).length;
-      if (matches > maxMatches) {
-        maxMatches = matches;
-        detectedEmotion = emotion as Emotion;
-      }
-    });
-
-    // Calculate intensity based on text length and matches
-    const intensity = Math.min(0.3 + (maxMatches * 0.2) + (text.length / 200), 1);
-
-    return { emotion: detectedEmotion, intensity };
-  };
-
-  const generateResponse = (emotion: Emotion, intensity: number, text: string) => {
-    const responses = {
-      happy: {
-        message: "I can feel your joy! Let's amplify this beautiful energy.",
-        music: `Playing uplifting ${intensity > 0.7 ? "high-energy" : "cheerful"} music`,
-        visual: "Environment shifting to warm, vibrant colors",
-        microAction: "Take a moment to smile and appreciate this feeling",
-      },
-      sad: {
-        message: "I'm here with you. It's okay to feel this way.",
-        music: `Playing ${intensity > 0.7 ? "deeply soothing" : "gentle comforting"} music`,
-        visual: "Creating a soft, embracing atmosphere",
-        microAction: "Try a gentle breathing exercise: inhale for 4, hold for 4, exhale for 6",
-      },
-      anxious: {
-        message: "Let's work through this together. You're safe here.",
-        music: `Playing ${intensity > 0.7 ? "grounding" : "calming"} soundscapes`,
-        visual: "Surrounding you with calming, flowing visuals",
-        microAction: "Ground yourself: Name 5 things you can see, 4 you can touch",
-      },
-      calm: {
-        message: "Beautiful. Let's maintain this peaceful state.",
-        music: "Playing ambient, tranquil tones",
-        visual: "Environment flowing with serene, ocean-like movements",
-        microAction: "Take 3 deep, mindful breaths",
-      },
-      excited: {
-        message: "Your energy is amazing! Let's channel it positively.",
-        music: `Playing ${intensity > 0.7 ? "dynamic, energetic" : "motivating"} beats`,
-        visual: "Environment pulsing with vibrant, energetic patterns",
-        microAction: "Quick movement: stretch your arms wide and take a power pose",
-      },
-      neutral: {
-        message: "Tell me more about how you're feeling...",
-        music: "Playing balanced, exploratory sounds",
-        visual: "Environment in balanced, exploratory mode",
-        microAction: "Journal prompt: What's on your mind right now?",
-      },
-    };
-
-    return responses[emotion];
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || loading) return;
@@ -94,31 +23,39 @@ const ChatInput = ({ onMoodUpdate }: ChatInputProps) => {
     setLoading(true);
 
     try {
-      // Simulate AI processing delay
-      await new Promise(resolve => setTimeout(resolve, 800));
+      console.log("Analyzing mood with AI...");
+      
+      const { data: result, error } = await supabase.functions.invoke('analyze-mood', {
+        body: { text: input }
+      });
 
-      const { emotion, intensity } = detectEmotion(input);
-      const response = generateResponse(emotion, intensity, input);
+      if (error) {
+        console.error("Error calling analyze-mood:", error);
+        throw error;
+      }
+
+      console.log("Mood analysis result:", result);
 
       onMoodUpdate({
-        emotion,
-        intensity,
-        message: response.message,
-        musicAction: response.music,
-        visualAction: response.visual,
-        microAction: response.microAction,
+        emotion: result.emotion,
+        intensity: result.intensity,
+        message: result.message,
+        musicAction: result.musicAction,
+        visualAction: result.visualAction,
+        microAction: result.microAction,
       });
 
       toast({
         title: "Mood detected",
-        description: `${emotion.charAt(0).toUpperCase() + emotion.slice(1)} • ${Math.round(intensity * 100)}%`,
+        description: `${result.emotion.charAt(0).toUpperCase() + result.emotion.slice(1)} • ${Math.round(result.intensity * 100)}%`,
       });
 
       setInput("");
     } catch (error) {
+      console.error("Error in handleSubmit:", error);
       toast({
         title: "Error",
-        description: "Failed to process your input",
+        description: "Failed to process your input. Please try again.",
         variant: "destructive",
       });
     } finally {
