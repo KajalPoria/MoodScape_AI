@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Base colors - MoodScape gradient palette */
+    --background: 250 100% 4%;
+    --foreground: 210 100% 98%;
+
+    /* Glass panels */
+    --card: 250 50% 12%;
+    --card-foreground: 210 100% 98%;
+
+    --popover: 250 50% 10%;
+    --popover-foreground: 210 100% 98%;
+
+    /* Primary - Deep purple/blue */
+    --primary: 265 85% 60%;
+    --primary-foreground: 210 100% 98%;
+
+    /* Secondary - Teal accent */
+    --secondary: 180 75% 55%;
+    --secondary-foreground: 250 100% 4%;
+
+    /* Muted glass effect */
+    --muted: 250 40% 20%;
+    --muted-foreground: 210 40% 70%;
+
+    /* Accent glow */
+    --accent: 180 90% 65%;
+    --accent-foreground: 250 100% 4%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 100% 98%;
+
+    --border: 250 30% 25%;
+    --input: 250 40% 15%;
+    --ring: 265 85% 60%;
+
+    --radius: 1rem;
+
+    /* Mood-specific colors */
+    --mood-calm: 200 80% 60%;
+    --mood-happy: 45 100% 60%;
+    --mood-anxious: 280 60% 55%;
+    --mood-sad: 220 50% 45%;
+    --mood-excited: 330 85% 65%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(265 85% 60%) 0%, hsl(180 75% 55%) 100%);
+    --gradient-calm: linear-gradient(135deg, hsl(200 80% 60%) 0%, hsl(180 90% 65%) 100%);
+    --gradient-happy: linear-gradient(135deg, hsl(45 100% 60%) 0%, hsl(30 100% 65%) 100%);
+    --gradient-anxious: linear-gradient(135deg, hsl(280 60% 55%) 0%, hsl(150 50% 50%) 100%);
+    --gradient-sad: linear-gradient(135deg, hsl(220 50% 45%) 0%, hsl(240 40% 35%) 100%);
+    --gradient-excited: linear-gradient(135deg, hsl(330 85% 65%) 0%, hsl(45 95% 60%) 100%);
+
+    /* Glass effects */
+    --glass-bg: hsla(250, 50%, 12%, 0.3);
+    --glass-border: hsla(210, 100%, 98%, 0.1);
+
+    /* Glow effects */
+    --glow-primary: 0 0 40px hsla(265, 85%, 60%, 0.4);
+    --glow-accent: 0 0 40px hsla(180, 90%, 65%, 0.4);
+
+    /* Animation timing */
+    --transition-smooth: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground overflow-x-hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  /* Glass panel styling */
+  .glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: var(--glow-primary);
+  }
+
+  .glow-accent {
+    box-shadow: var(--glow-accent);
+  }
+
+  /* Animated gradient backgrounds */
+  .gradient-animated {
+    background: linear-gradient(-45deg, hsl(265 85% 60%), hsl(280 70% 55%), hsl(180 75% 55%), hsl(200 80% 60%));
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Breathing animation */
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.05); opacity: 1; }
+  }
+
+  .breathe {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  /* Pulse glow */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px hsla(265, 85%, 60%, 0.4); }
+    50% { box-shadow: 0 0 40px hsla(180, 90%, 65%, 0.6); }
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  /* Float animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+}
